@@ -1,64 +1,60 @@
 <%= turbo_stream_from "products" %>
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 
-<div class="w-full">
+<div class="w-full max-w-6xl mx-auto px-6 py-8">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice">
+    <div class="mb-10 p-4 border-l-4 border-black bg-gray-50 text-gray-800 shadow-sm rounded-r-lg" id="notice">
       <%= notice %>
-    </p>
+    </div>
   <% end %>
 
-  <div class="flex justify-between items-center pb-8">
-    <h1 class="mx-auto font-bold text-4xl">Products</h1>
+  <div class="flex justify-between items-center mb-12 border-b border-gray-200 pb-6">
+    <h1 class="text-4xl font-bold text-gray-900 tracking-tight">Products</h1>
+    <%= link_to new_product_path, class: 'group relative inline-flex items-center justify-center px-4 py-2 bg-black text-white font-medium overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:bg-gray-800 rounded-lg transform hover:-translate-y-0.5' do %>
+      <span class="relative z-10">Add New Product</span>
+      <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+    <% end %>
   </div>
 
-  <table id="products" class="mx-auto">
-    <tfoot>
-      <tr>
-        <td colspan="3">
-          <div class="mt-8">
-            <%= link_to 'New Product', new_product_path, class: 'inline rounded-lg py-3 px-5 bg-green-600 text-white block font-medium' %>
+  <div id="products" class="space-y-8">
+    <% @products.each do |product| %>
+      <div class="group relative bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="grid md:grid-cols-[200px_1fr_200px] grid-cols-1">
+          <div class="p-6 flex items-center justify-center bg-gradient-to-br from-gray-100 to-white">
+            <%= image_tag(product.image, class: 'h-40 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500') %>
           </div>
-        </td>
-      </tr>
-    </tfoot>
-
-    <tbody>
-      <% @products.each do |product| %>
-        <tr class="<%= cycle('bg-green-50', 'bg-white') %>">
-          <td class="px-2 py-3">
-            <%= image_tag(product.image, class: 'w-40') %>
-          </td>
-
-          <td>
-            <h1 class="text-xl font-bold">
+          
+          <div class="p-6 space-y-2 border-l border-r border-gray-100">
+            <h3 class="text-2xl font-bold text-gray-900">
               <%= product.title %>
-            </h1>
-            <p class="my-3">
-              <%= truncate(strip_tags(product.description), length: 80) %>
+            </h3>
+            <p class="text-gray-600">
+              <%= truncate(strip_tags(product.description), length: 120) %>
             </p>
-            <p>
+            <div class="pt-2 font-semibold text-2xl text-black">
               <%= number_to_currency(product.price) %>
-            </p>
-          </td>
-
-          <td class="px-3">
-            <ul>
-              <li>
-                <%= link_to 'Show', product_path(product), class: 'hover:underline' %>
-              </li>
-              
-              <li>
-                <%= link_to 'Edit', edit_product_path(product), class: 'hover:underline' %>
-              </li>
-              
-              <li>
-                <%= button_to 'Destroy', product_path(product), method: :delete, data: { turbo_confirm: "Are you sure you want to delete: #{product.title}?" }, class: 'hover:underline' %>
-              </li>
-            </ul>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+            </div>
+          </div>
+          
+          <div class="p-6 bg-gray-50 flex flex-col gap-2 justify-center transition-colors duration-300 group-hover:bg-gray-100">
+            <%= link_to product_path(product), class: 'relative overflow-hidden inline-flex items-center justify-center w-full px-4 py-2 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm hover:shadow-md' do %>
+              <span>View Details</span>
+              <span class="absolute right-4 opacity-0 transform translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">→</span>
+            <% end %>
+            
+            <%= link_to edit_product_path(product), class: 'relative overflow-hidden inline-flex items-center justify-center w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg font-medium hover:border-gray-400 hover:bg-gray-50 transition-all duration-300 transform hover:-translate-y-0.5' do %>
+              <span>Edit Product</span>
+            <% end %>
+            
+            <%= button_to product_path(product), 
+                method: :delete, 
+                data: { turbo_confirm: "Are you sure you want to delete: #{product.title}?" }, 
+                class: 'relative overflow-hidden inline-flex items-center justify-center w-full px-4 py-2 border border-gray-300 text-gray-600 rounded-lg font-medium hover:border-red-300 hover:bg-red-50 hover:text-red-700 transition-all duration-300 transform hover:-translate-y-0.5' do %>
+              <span>Delete</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

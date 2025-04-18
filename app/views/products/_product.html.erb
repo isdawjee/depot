@@ -1,18 +1,35 @@
-<div id="<%= dom_id product %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= product.title %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= product.description %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Image:</strong>
-    <%= link_to product.image.filename, product.image, class: "text-gray-700 underline hover:no-underline" if product.image.attached? %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Price:</strong>
-    <%= product.price %>
+<div id="<%= dom_id product %>" class="w-full">
+  <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+    <% if product.image.attached? %>
+      <div class="flex justify-center bg-gradient-to-br from-gray-100 to-white p-8 border-b border-gray-100">
+        <%= image_tag product.image, class: "h-64 object-contain" %>
+      </div>
+    <% end %>
+    
+    <div class="p-8 space-y-6">
+      <div>
+        <h3 class="text-gray-500 text-sm uppercase tracking-wider font-medium mb-1">Title</h3>
+        <p class="text-2xl font-bold text-gray-900"><%= product.title %></p>
+      </div>
+      
+      <div>
+        <h3 class="text-gray-500 text-sm uppercase tracking-wider font-medium mb-1">Price</h3>
+        <p class="text-2xl font-bold text-black"><%= number_to_currency(product.price) %></p>
+      </div>
+      
+      <div>
+        <h3 class="text-gray-500 text-sm uppercase tracking-wider font-medium mb-1">Description</h3>
+        <div class="prose prose-gray max-w-none text-gray-700">
+          <%= product.description %>
+        </div>
+      </div>
+      
+      <% if product.image.attached? %>
+        <div>
+          <h3 class="text-gray-500 text-sm uppercase tracking-wider font-medium mb-1">Image</h3>
+          <p><%= link_to product.image.filename, product.image, class: "text-black underline decoration-gray-300 underline-offset-2 hover:decoration-black transition-colors" %></p>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
