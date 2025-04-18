@@ -1,30 +1,100 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= content_for(:title) || "Depot" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html lang="en">
+<head>
+  <title><%= content_for(:title) || "Pragprog Books Online Store" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= yield :head %>
+  <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+  <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+  <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.png">
+  
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
+  <%# Includes all stylesheet files in app/assets/stylesheets %>
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
 
-  <body>
-    <main class="container mx-auto mt-8 px-5 flex">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="/" class="flex-shrink-0 flex items-center">
+            <%= image_tag 'logo.svg', alt: 'The Pragmatic Bookshelf', class: 'h-16' %>
+          </a>
+        </div>
+        
+        <div class="flex items-center">
+          <nav class="hidden md:ml-10 md:flex md:space-x-4">
+            <a href="/" class="px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all duration-150">
+              <i class="ph ph-house mr-1.5"></i>Home
+            </a>
+            <a href="/questions" class="px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all duration-150">
+              <i class="ph ph-question mr-1.5"></i>Questions
+            </a>
+            <a href="/news" class="px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all duration-150">
+              <i class="ph ph-newspaper mr-1.5"></i>News
+            </a>
+            <a href="/contact" class="px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all duration-150">
+              <i class="ph ph-envelope mr-1.5"></i>Contact
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile menu, show/hide based on menu state -->
+    <div class="md:hidden border-t border-gray-200 p-2">
+      <div class="flex justify-around">
+        <a href="/" class="text-gray-600 hover:text-gray-900 p-2 flex flex-col items-center text-xs">
+          <i class="ph ph-house text-xl"></i>
+          <span>Home</span>
+        </a>
+        <a href="/questions" class="text-gray-600 hover:text-gray-900 p-2 flex flex-col items-center text-xs">
+          <i class="ph ph-question text-xl"></i>
+          <span>Questions</span>
+        </a>
+        <a href="/news" class="text-gray-600 hover:text-gray-900 p-2 flex flex-col items-center text-xs">
+          <i class="ph ph-newspaper text-xl"></i>
+          <span>News</span>
+        </a>
+        <a href="/contact" class="text-gray-600 hover:text-gray-900 p-2 flex flex-col items-center text-xs">
+          <i class="ph ph-envelope text-xl"></i>
+          <span>Contact</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <% if @page_title.present? %>
+        <div class="border-b border-gray-200 pb-4 mb-6">
+          <h1 class="text-3xl font-bold text-gray-900"><%= @page_title %></h1>
+        </div>
+      <% end %>
+      
       <%= yield %>
-    </main>
-  </body>
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 mt-12">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-sm text-gray-500">
+        &copy; <%= Time.current.year %> The Pragmatic Bookshelf. All rights reserved.
+      </p>
+    </div>
+  </footer>
+</body>
 </html>

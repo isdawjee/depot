@@ -1,0 +1,43 @@
+<div class="w-full max-w-6xl mx-auto px-6 py-8">
+  <% if notice.present? %>
+    <div class="mb-10 p-4 border-l-4 border-black bg-gray-50 text-gray-800 shadow-sm rounded-r-lg" id="notice">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-12 border-b border-gray-200 pb-6">
+    <h1 class="text-4xl font-bold text-gray-900 tracking-tight">Your Pragmatic Catalog</h1>
+  </div>
+
+  <div class="space-y-8">
+    <% @products.each do |product| %>
+      <div class="group bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+        <div class="grid md:grid-cols-[220px_1fr] grid-cols-1">
+          <div class="p-6 flex items-center justify-center bg-gradient-to-br from-gray-100 to-white">
+            <%= image_tag(product.image, class: 'h-48 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500') %>
+          </div>
+          
+          <div class="p-6 space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">
+              <%= product.title %>
+            </h2>
+            
+            <div class="prose prose-gray max-w-none text-gray-600">
+              <%= sanitize(product.description) %>
+            </div>
+            
+            <div class="flex justify-between items-center pt-4">
+              <div class="text-2xl font-bold text-black">
+                <%= number_to_currency(product.price) %>
+              </div>
+              
+              <button class="inline-flex items-center justify-center px-5 py-2.5 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm hover:shadow-md">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
